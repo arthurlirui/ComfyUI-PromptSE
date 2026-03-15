@@ -29,7 +29,8 @@ class PromptSE:
             "settings": {
                 "connector": ", ",
                 "mode": "M",
-                "weightFormat": "parentheses"
+                "weightFormat": "parentheses",
+                "selectedModel": "ltx2.3"
             },
             "lexicon": []
         }

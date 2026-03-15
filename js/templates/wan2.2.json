@@ -1,0 +1,9 @@
+{
+  "model": "wan2.2",
+  "entries": [
+    { "title": "主体", "content": "cute anime girl with silver hair", "enabled": true, "weight": 1.0 },
+    { "title": "情绪", "content": "gentle smile, relaxed pose", "enabled": true, "weight": 1.0 },
+    { "title": "场景", "content": "sunset rooftop, city skyline, soft clouds", "enabled": true, "weight": 1.0 },
+    { "title": "质量", "content": "masterpiece, best quality, detailed eyes", "enabled": true, "weight": 1.2 }
+  ]
+}

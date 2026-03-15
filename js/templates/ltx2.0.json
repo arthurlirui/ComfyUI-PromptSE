@@ -1,0 +1,9 @@
+{
+  "model": "ltx2.0",
+  "entries": [
+    { "title": "主体", "content": "fantasy warrior in ancient armor", "enabled": true, "weight": 1.0 },
+    { "title": "风格", "content": "stylized illustration, concept art", "enabled": true, "weight": 1.1 },
+    { "title": "构图", "content": "full body shot, dramatic perspective", "enabled": true, "weight": 1.0 },
+    { "title": "背景", "content": "ruined temple, dust particles, warm atmosphere", "enabled": true, "weight": 1.0 }
+  ]
+}

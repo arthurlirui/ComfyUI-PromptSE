@@ -14,6 +14,8 @@
 -   **直观拖拽排序**: 通过拖拽操作，自由调整提示词条目的顺序和优先级。
 -   **全局连接符**: 自定义多个提示词之间的连接符，如 `, `、`\n` (换行) 或 ` | `。
 -   **S/M 模式切换**: 在“单个模式”（仅输出选中的第一个条目）和“多个模式”（输出所有启用的条目）之间自由切换。
+-   **模型模板切换**: 支持通过下拉菜单切换不同模型（如 `ltx2.3`、`ltx2.0`、`wan2.2`），自动加载对应 JSON 模板并生成结构化提示词条目。
+-   **自定义提示词追加**: 在已加载模板的基础上继续添加自定义提示词条目。
 -   **响应式 UI**: 节点界面会根据节点宽度自动调整布局，确保在任何尺寸下都有良好的用户体验。
 -   **数据持久化**: 所有设置、条目和词库都会随 ComfyUI 工作流一起保存和加载，无需重复配置。
 
@@ -47,6 +49,8 @@
 3.  **高级功能**:
     *   **拖拽排序**: 在主界面按住条目并上下拖动即可排序。
     *   **全局设置**: 点击左下角的 `⚙️` 按钮修改全局连接符。
+    *   **模型模板**: 在节点顶部下拉框选择目标模型，自动加载对应 `js/templates/*.json` 的结构化模板。
+    *   **自定义提示词**: 使用底部 `+ 自定义提示词` 按钮继续扩展条目。
     *   **S/M 模式**: 点击右下角的 "Mode: M/S" 按钮切换输出模式。
 
 ## 📄 词库文件格式
@@ -115,6 +119,8 @@ A powerful custom node for ComfyUI, designed to revolutionize the way you manage
 -   **Intuitive Drag-and-Drop Sorting**: Freely adjust the order and priority of prompt entries with drag-and-drop operations.
 -   **Global Connector**: Customize the separator used between multiple prompts, such as `, `, `\n` (newline), or ` | `.
 -   **S/M Mode Toggle**: Switch freely between "Single Mode" (outputs only the first enabled entry) and "Multiple Mode" (outputs all enabled entries).
+-   **Model Template Switcher**: Use a dropdown to switch models (e.g., `ltx2.3`, `ltx2.0`, `wan2.2`) and auto-load model-specific structured prompt templates from JSON files.
+-   **Custom Prompt Extension**: Continue adding custom prompt entries on top of the loaded model template.
 -   **Responsive UI**: The node's interface automatically adjusts its layout based on the node's width, ensuring a great user experience at any size.
 -   **Data Persistence**: All settings, entries, and the lexicon are saved and loaded with the ComfyUI workflow, eliminating the need for repeated configuration.
 
@@ -146,6 +152,8 @@ A powerful custom node for ComfyUI, designed to revolutionize the way you manage
 3.  **Advanced Features**:
     *   **Drag-and-Drop Sorting**: Press and hold an entry in the main interface and drag it up or down to reorder.
     *   **Global Settings**: Click the `⚙️` button in the lower-left corner to change the global connector.
+    *   **Model Template**: Select a model in the top dropdown to load the corresponding JSON template from `js/templates/*.json`.
+    *   **Custom Prompt**: Use the bottom `+ Custom Prompt` button to append your own entries.
     *   **S/M Mode**: Click the "Mode: M/S" button in the lower-right corner to toggle the output mode.
 
 ## 📄 Lexicon File Format

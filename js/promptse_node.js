@@ -42,7 +42,8 @@ app.registerExtension({
                                 mode: "M",
                                 weightFormat: "parentheses",
                                 showOutputPreview: false, // Default to hidden
-                                language: "zh" // Default language
+                                language: "zh", // Default language
+                                selectedModel: "ltx2.3"
                             },
                             lexicon: []
                         };
@@ -66,10 +67,15 @@ app.registerExtension({
                         if (!this.promptse_data.settings.hasOwnProperty('language')) {
                             this.promptse_data.settings.language = "zh";
                         }
+                        if (!this.promptse_data.settings.hasOwnProperty('selectedModel')) {
+                            this.promptse_data.settings.selectedModel = "ltx2.3";
+                        }
                         if (!this.promptse_data.lexicon) {
                             this.promptse_data.lexicon = [];
                         }
                     }
+
+                    this.modelTemplates = ["ltx2.3", "ltx2.0", "wan2.2"];
                     
                     // Language system with complete Chinese localization
                     // Always use the saved language setting
@@ -78,6 +84,8 @@ app.registerExtension({
                         zh: {
                             // 基础文本
                             title: "提示词编辑器",
+                            modelTemplate: "模型模板",
+                            customPrompt: "自定义提示词",
                             
                             // 模式相关 - 更直观的描述
                             multiMode: "多选模式",
@@ -149,6 +157,8 @@ app.registerExtension({
                         en: {
                             // Basic text
                             title: "PromptSE",
+                            modelTemplate: "Model Template",
+                            customPrompt: "Custom Prompt",
                             
                             // Mode related
                             multiMode: "Multi Mode",
@@ -252,6 +262,34 @@ app.registerExtension({
                         dataWidget.hidden = true;
                         dataWidget.computeSize = () => [0, 0];
                     }
+
+                    this.loadModelTemplate = async (modelName) => {
+                        try {
+                            const resp = await fetch(new URL(`./templates/${modelName}.json`, import.meta.url));
+                            if (!resp.ok) {
+                                throw new Error(`HTTP ${resp.status}`);
+                            }
+                            const template = await resp.json();
+                            if (!Array.isArray(template.entries)) {
+                                throw new Error("Invalid template entries");
+                            }
+
+                            const mappedEntries = template.entries.map((entry, index) => ({
+                                id: entry.id || `${modelName}_entry_${index}_${Date.now()}`,
+                                title: entry.title || `Entry ${index + 1}`,
+                                content: entry.content || "",
+                                enabled: entry.enabled !== false,
+                                weight: typeof entry.weight === "number" ? entry.weight : 1.0
+                            }));
+
+                            this.promptse_data.entries = mappedEntries;
+                            this.promptse_data.settings.selectedModel = modelName;
+                            this.renderPromptseEntries();
+                            this.triggerSlotChanged();
+                        } catch (error) {
+                            console.error(`PromptSE: Failed to load model template ${modelName}:`, error);
+                        }
+                    };
                     
                     // Create main container - use full width like skbundle, only leave space for the dot
                     const container = createEl("div", "promptse-container");
@@ -335,6 +373,30 @@ app.registerExtension({
                         this.openSettingsPanel();
                     };
                     
+                    const modelSelect = createEl("select", "promptse-model-select");
+                    modelSelect.title = this.getText("modelTemplate");
+                    modelSelect.style.cssText = `
+                        padding: 2px 4px;
+                        background: #3a3a3a;
+                        color: #ccc;
+                        border: 1px solid #666;
+                        border-radius: 2px;
+                        cursor: pointer;
+                        font-size: 10px;
+                        min-width: 86px;
+                    `;
+                    this.modelTemplates.forEach((model) => {
+                        const option = createEl("option", "", model);
+                        option.value = model;
+                        option.selected = this.promptse_data.settings.selectedModel === model;
+                        modelSelect.appendChild(option);
+                    });
+                    modelSelect.onchange = async (e) => {
+                        const selectedModel = e.target.value;
+                        await this.loadModelTemplate(selectedModel);
+                    };
+
+                    toolbar.appendChild(modelSelect);
                     toolbar.appendChild(importBtn);
                     toolbar.appendChild(settingsBtn);
                     header.appendChild(title);
@@ -1574,7 +1636,8 @@ app.registerExtension({
                                 mode: "M",
                                 weightFormat: "parentheses",
                                 showOutputPreview: false,
-                                language: "zh"
+                                language: "zh",
+                                selectedModel: "ltx2.3"
                             },
                             lexicon: []
                         };
@@ -1648,7 +1711,7 @@ app.registerExtension({
                     `;
                     
                     // Add button
-                    const addBtn = createEl("button", "", "+ " + this.getText("add"));
+                    const addBtn = createEl("button", "", "+ " + this.getText("customPrompt"));
                     addBtn.setAttribute('data-action', 'add');
                     addBtn.style.cssText = `
                         padding: 4px 8px;
@@ -1867,6 +1930,9 @@ app.registerExtension({
                     }
                     if (!this.promptse_data.settings.hasOwnProperty('weightFormat')) {
                         this.promptse_data.settings.weightFormat = 'parentheses';
+                    }
+                    if (!this.promptse_data.settings.hasOwnProperty('selectedModel')) {
+                        this.promptse_data.settings.selectedModel = 'ltx2.3';
                     }
                     
                     // Always use the saved language
