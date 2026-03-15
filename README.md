@@ -29,6 +29,10 @@
 
 ## 📚 使用方法
 
+### LTX 2.3 默认提示词模板
+
+仓库提供了 `ltx2.3_default_prompt.json`，可直接作为 PromptSE 的默认数据模板导入/粘贴使用。该模板按镜头类型、主体动作、场景氛围、相机运动、风格与避免项进行分段，适合作为 LTX 2.3 的起步提示词结构。
+
 1.  **基础操作**:
     *   从节点菜单中添加 "PromptSE" 节点。
     *   使用节点底部的 `+` 和 `-` 按钮来增加或移除条目。
@@ -129,6 +133,10 @@ A powerful custom node for ComfyUI, designed to revolutionize the way you manage
 3.  Search for "PromptSE" in the node search box to find and use the node.
 
 ## 📚 How to Use
+
+### LTX 2.3 Default Prompt Template
+
+The repository includes `ltx2.3_default_prompt.json`, which can be directly imported/pasted as PromptSE default data. The template is organized by shot type, subject/action, scene/mood, camera motion, visual style, and avoid terms as a practical starting structure for LTX 2.3 prompting.
 
 1.  **Basic Operations**:
     *   Add the "PromptSE" node from the node menu.
