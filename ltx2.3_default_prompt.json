@@ -1,0 +1,89 @@
+{
+  "entries": [
+    {
+      "id": "ltx23_entry_01",
+      "title": "镜头类型 / Shot Type",
+      "content": "cinematic medium close-up shot",
+      "enabled": true,
+      "weight": 1.1
+    },
+    {
+      "id": "ltx23_entry_02",
+      "title": "主体与动作 / Subject + Action",
+      "content": "a young woman in a white coat walks slowly toward the camera and gently smiles",
+      "enabled": true,
+      "weight": 1.2
+    },
+    {
+      "id": "ltx23_entry_03",
+      "title": "场景与时间 / Scene + Time",
+      "content": "in a modern city street at dusk, wet asphalt reflecting neon signs",
+      "enabled": true,
+      "weight": 1.1
+    },
+    {
+      "id": "ltx23_entry_04",
+      "title": "光照与氛围 / Lighting + Mood",
+      "content": "soft volumetric lighting, realistic shadows, calm cinematic mood",
+      "enabled": true,
+      "weight": 1.0
+    },
+    {
+      "id": "ltx23_entry_05",
+      "title": "相机运动 / Camera Motion",
+      "content": "slow dolly-in, subtle handheld micro-shake",
+      "enabled": true,
+      "weight": 1.0
+    },
+    {
+      "id": "ltx23_entry_06",
+      "title": "画面风格 / Visual Style",
+      "content": "highly detailed, natural skin texture, filmic color grading, physically plausible",
+      "enabled": true,
+      "weight": 1.1
+    },
+    {
+      "id": "ltx23_entry_07",
+      "title": "时长与帧率提示 / Duration + FPS Hint",
+      "content": "consistent motion across the whole clip, smooth temporal coherence",
+      "enabled": true,
+      "weight": 1.0
+    },
+    {
+      "id": "ltx23_entry_08",
+      "title": "避免项 / Avoid",
+      "content": "no text, no logo, no watermark, no extra fingers, no deformed face, no flicker, no jitter",
+      "enabled": true,
+      "weight": 1.0
+    }
+  ],
+  "settings": {
+    "connector": ", ",
+    "mode": "M",
+    "weightFormat": "parentheses",
+    "showOutputPreview": true,
+    "language": "zh"
+  },
+  "lexicon": [
+    {
+      "english": "cinematic close-up",
+      "chinese": "电影感近景"
+    },
+    {
+      "english": "slow dolly-in",
+      "chinese": "缓慢推镜"
+    },
+    {
+      "english": "smooth temporal coherence",
+      "chinese": "时间一致性平滑"
+    },
+    {
+      "english": "physically plausible lighting",
+      "chinese": "物理可信光照"
+    },
+    {
+      "english": "no flicker",
+      "chinese": "无闪烁"
+    }
+  ]
+}
