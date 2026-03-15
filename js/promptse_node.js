@@ -8,6 +8,24 @@ function createEl(tag, className = "", text = "") {
     return el;
 }
 
+function getDefaultTemplateEntries(templateId) {
+    if (templateId === "ltx23") {
+        return [{
+            id: `entry_${Date.now()}`,
+            title: "LTX2.3 结构化提示词",
+            content: "风格 / 画幅\n镜头角度 + 运镜\n角色：年龄、外貌、穿着\n场景：地点、时间、光线\n具体动作\n具体物理声音\n对话",
+            enabled: true,
+            weight: 1.0
+        }];
+    }
+
+    return [
+        { id: "entry1", title: "角色", content: "beautiful girl, long hair", enabled: true, weight: 1.0 },
+        { id: "entry2", title: "风格", content: "anime style, high quality", enabled: true, weight: 1.2 },
+        { id: "entry3", title: "细节", content: "detailed, masterpiece", enabled: false, weight: 1.0 }
+    ];
+}
+
 app.registerExtension({
     name: "PromptSE.Extension",
     
@@ -32,17 +50,14 @@ app.registerExtension({
                     // Initialize node data only if it doesn't exist (preserve saved data)
                     if (!this.promptse_data) {
                         this.promptse_data = {
-                            entries: [
-                                { id: "entry1", title: "角色", content: "beautiful girl, long hair", enabled: true, weight: 1.0 },
-                                { id: "entry2", title: "风格", content: "anime style, high quality", enabled: true, weight: 1.2 },
-                                { id: "entry3", title: "细节", content: "detailed, masterpiece", enabled: false, weight: 1.0 }
-                            ],
+                            entries: getDefaultTemplateEntries("ltx23"),
                             settings: {
                                 connector: ", ",
                                 mode: "M",
                                 weightFormat: "parentheses",
                                 showOutputPreview: false, // Default to hidden
-                                language: "zh" // Default language
+                                language: "zh", // Default language
+                                modelTemplate: "ltx23"
                             },
                             lexicon: []
                         };
@@ -65,6 +80,9 @@ app.registerExtension({
                         }
                         if (!this.promptse_data.settings.hasOwnProperty('language')) {
                             this.promptse_data.settings.language = "zh";
+                        }
+                        if (!this.promptse_data.settings.hasOwnProperty('modelTemplate')) {
+                            this.promptse_data.settings.modelTemplate = "ltx23";
                         }
                         if (!this.promptse_data.lexicon) {
                             this.promptse_data.lexicon = [];
@@ -140,6 +158,12 @@ app.registerExtension({
                             
                             // 输出预览
                             output: "输出预览：",
+
+                            // 模板
+                            modelTemplate: "模型模版",
+                            applyTemplate: "应用模版",
+                            templateLtx23: "LTX2.3 结构化",
+                            templateGeneric: "通用模型",
                             
                             // 成功/错误消息
                             importSuccess: "成功导入 {count} 个词库条目！",
@@ -211,6 +235,12 @@ app.registerExtension({
                             
                             // Output preview
                             output: "Output:",
+
+                            // Templates
+                            modelTemplate: "Model Template",
+                            applyTemplate: "Apply Template",
+                            templateLtx23: "LTX2.3 Structured",
+                            templateGeneric: "Generic Model",
                             
                             // Success/Error messages
                             importSuccess: "Successfully imported {count} lexicon entries!",
@@ -300,6 +330,58 @@ app.registerExtension({
                         gap: 8px;
                         align-items: center;
                     `;
+
+                    this.applyPromptTemplate = (templateId) => {
+                        this.promptse_data.settings.modelTemplate = templateId;
+                        this.promptse_data.entries = getDefaultTemplateEntries(templateId);
+                        this.renderPromptseEntries();
+                        this.triggerSlotChanged();
+                    };
+
+                    const templateLabel = createEl("span", "", this.getText("modelTemplate"));
+                    templateLabel.style.cssText = `
+                        color: #aaa;
+                        font-size: 10px;
+                    `;
+
+                    const templateSelect = createEl("select", "", "");
+                    templateSelect.style.cssText = `
+                        background: #3c3c3c;
+                        color: #ddd;
+                        border: 1px solid #666;
+                        border-radius: 2px;
+                        font-size: 10px;
+                        padding: 2px 4px;
+                    `;
+
+                    [
+                        { value: "ltx23", text: this.getText("templateLtx23") },
+                        { value: "generic", text: this.getText("templateGeneric") }
+                    ].forEach(option => {
+                        const optionEl = createEl("option", "", option.text);
+                        optionEl.value = option.value;
+                        templateSelect.appendChild(optionEl);
+                    });
+                    templateSelect.value = this.promptse_data.settings.modelTemplate || "ltx23";
+
+                    templateSelect.onchange = (e) => {
+                        this.promptse_data.settings.modelTemplate = e.target.value;
+                        this.triggerSlotChanged();
+                    };
+
+                    const applyTemplateBtn = createEl("button", "", this.getText("applyTemplate"));
+                    applyTemplateBtn.style.cssText = `
+                        padding: 2px 6px;
+                        background: #444;
+                        color: #ccc;
+                        border: 1px solid #666;
+                        border-radius: 2px;
+                        cursor: pointer;
+                        font-size: 10px;
+                    `;
+                    applyTemplateBtn.onclick = () => {
+                        this.applyPromptTemplate(templateSelect.value);
+                    };
                     
                     // Import lexicon button
                     const importBtn = createEl("button", "", "📁");
@@ -337,6 +419,9 @@ app.registerExtension({
                     
                     toolbar.appendChild(importBtn);
                     toolbar.appendChild(settingsBtn);
+                    toolbar.appendChild(templateLabel);
+                    toolbar.appendChild(templateSelect);
+                    toolbar.appendChild(applyTemplateBtn);
                     header.appendChild(title);
                     header.appendChild(toolbar);
                     
@@ -1564,17 +1649,14 @@ app.registerExtension({
                     // Function to reset to default
                     this.resetToDefault = () => {
                         this.promptse_data = {
-                            entries: [
-                                { id: "entry1", title: "角色", content: "beautiful girl, long hair", enabled: true, weight: 1.0 },
-                                { id: "entry2", title: "风格", content: "anime style, high quality", enabled: true, weight: 1.2 },
-                                { id: "entry3", title: "细节", content: "detailed, masterpiece", enabled: false, weight: 1.0 }
-                            ],
+                            entries: getDefaultTemplateEntries("ltx23"),
                             settings: {
                                 connector: ", ",
                                 mode: "M",
                                 weightFormat: "parentheses",
                                 showOutputPreview: false,
-                                language: "zh"
+                                language: "zh",
+                                modelTemplate: "ltx23"
                             },
                             lexicon: []
                         };
