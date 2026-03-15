@@ -15,8 +15,8 @@ class PromptSE:
     
     CATEGORY = "PromptSE"
     FUNCTION = "process"
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("output_string",)
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("output_string", "llm_input",)
     
     def __init__(self):
         # Default data structure
@@ -102,8 +102,10 @@ class PromptSE:
                         print(f"PromptSE: Multiple mode - added: '{formatted_content}' (weight: {weight})")
         
         output_string = connector.join(final_parts)
+        llm_input = "Generate a complete high-quality prompt with these selected terms: " + ", ".join(final_parts) if final_parts else ""
         print(f"PromptSE: Generated output: '{output_string}'")
-        return (output_string,)
+        print(f"PromptSE: LLM input: '{llm_input}'")
+        return (output_string, llm_input)
 
 # Test the node
 if __name__ == "__main__":
