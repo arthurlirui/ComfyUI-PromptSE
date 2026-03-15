@@ -22,15 +22,19 @@ class PromptSE:
         # Default data structure
         self.default_data = {
             "entries": [
-                {"id": "entry1", "title": "Character", "content": "beautiful girl, long hair", "enabled": True, "weight": 1.0},
-                {"id": "entry2", "title": "Style", "content": "anime style, high quality", "enabled": True, "weight": 1.2},
-                {"id": "entry3", "title": "Details", "content": "detailed, masterpiece", "enabled": False, "weight": 1.0}
+                {
+                    "id": "entry_ltx23_default",
+                    "title": "LTX2.3 Structured Prompt",
+                    "content": "风格 / 画幅\n镜头角度 + 运镜\n角色：年龄、外貌、穿着\n场景：地点、时间、光线\n具体动作\n具体物理声音\n对话",
+                    "enabled": True,
+                    "weight": 1.0
+                }
             ],
             "settings": {
                 "connector": ", ",
                 "mode": "M",
                 "weightFormat": "parentheses",
-                "selectedModel": "ltx2.3"
+                "modelTemplate": "ltx23"
             },
             "lexicon": []
         }
