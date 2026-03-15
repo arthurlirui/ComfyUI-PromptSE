@@ -125,6 +125,46 @@ function getDefaultTemplateEntries(templateId) {
     ];
 }
 
+const TEMPLATE_FILE_MAP = {
+    ltx23: "ltx2.3.json",
+    ltx20: "ltx2.0.json",
+    wan22: "wan2.2.json",
+    generic: null
+};
+
+async function loadTemplateEntries(templateId) {
+    const filename = TEMPLATE_FILE_MAP[templateId];
+    if (!filename) {
+        return getDefaultTemplateEntries("generic");
+    }
+
+    try {
+        const templateUrl = new URL(`./templates/${filename}`, import.meta.url).toString();
+        const response = await fetch(templateUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to load template: ${response.status}`);
+        }
+        const payload = await response.json();
+        if (Array.isArray(payload.entries) && payload.entries.length > 0) {
+            return payload.entries.map((entry, idx) => ({
+                id: entry.id || `${templateId}_entry_${idx + 1}`,
+                title: entry.title || `Entry ${idx + 1}`,
+                content: entry.content || "",
+                enabled: entry.enabled !== false,
+                weight: typeof entry.weight === "number" ? entry.weight : 1.0,
+                options: Array.isArray(entry.options) ? [...entry.options] : [],
+                selectedOptions: Array.isArray(entry.selectedOptions)
+                    ? [...entry.selectedOptions]
+                    : (entry.content ? [entry.content] : [])
+            }));
+        }
+    } catch (error) {
+        console.warn("PromptSE: template load failed, fallback to built-in", templateId, error);
+    }
+
+    return getDefaultTemplateEntries(templateId);
+}
+
 app.registerExtension({
     name: "PromptSE.Extension",
     
@@ -218,9 +258,12 @@ app.registerExtension({
                             pipe: "管道符 (|)",
                             space: "空格",
                             customConnector: "自定义连接符",
-                            quickSelect: "快捷选择",
+                            quickSelect: "快捷多选",
                             customPromptOption: "自定义输入...",
-                            customPromptPlaceholder: "输入自定义提示词",
+                            customPromptPlaceholder: "输入自定义提示词（逗号分隔）",
+                            applySelectedTerms: "应用选中词条",
+                            saveInputTerms: "保存输入词条",
+                            generatedPrompt: "LLM生成提示词：",
                             
                             // 权重格式
                             weightFormat: "权重格式",
@@ -298,9 +341,12 @@ app.registerExtension({
                             pipe: "Pipe (|)",
                             space: "Space",
                             customConnector: "Custom Connector",
-                            quickSelect: "Quick Select",
+                            quickSelect: "Quick Multi Select",
                             customPromptOption: "Custom input...",
-                            customPromptPlaceholder: "Enter custom prompt",
+                            customPromptPlaceholder: "Enter custom terms (comma separated)",
+                            applySelectedTerms: "Apply Selected Terms",
+                            saveInputTerms: "Save Input Terms",
+                            generatedPrompt: "LLM Generated Prompt:",
                             
                             // Weight format
                             weightFormat: "Weight Format",
@@ -363,6 +409,30 @@ app.registerExtension({
                         return text;
                     };
                     
+                    this.normalizePromptseEntries = () => {
+                        this.promptse_data.entries = (this.promptse_data.entries || []).map((entry, idx) => {
+                            const normalized = {
+                                id: entry.id || `entry_${idx + 1}`,
+                                title: entry.title || `Entry ${idx + 1}`,
+                                content: entry.content || "",
+                                enabled: entry.enabled !== false,
+                                weight: typeof entry.weight === "number" ? entry.weight : 1.0,
+                                options: Array.isArray(entry.options) ? [...entry.options] : [],
+                                selectedOptions: Array.isArray(entry.selectedOptions) ? [...entry.selectedOptions] : []
+                            };
+                            if (normalized.selectedOptions.length === 0 && normalized.content) {
+                                normalized.selectedOptions = normalized.content
+                                    .split(/[，,;；\n]/)
+                                    .map((v) => v.trim())
+                                    .filter(Boolean)
+                                    .filter((v) => normalized.options.includes(v));
+                            }
+                            return normalized;
+                        });
+                    };
+
+                    this.normalizePromptseEntries();
+
                     // Create hidden widget to store data
                     const dataWidget = this.addWidget("text", "promptse_data", JSON.stringify(this.promptse_data), (value) => {
                         console.log("PromptSE: Widget value changed:", value);
@@ -373,6 +443,7 @@ app.registerExtension({
                                 if (parsedData && parsedData.settings) {
                                     this.promptse_data = parsedData;
                                     this.language = parsedData.settings.language || 'zh';
+                                    this.normalizePromptseEntries();
                                     console.log("PromptSE: Updated internal data from widget:", this.promptse_data.settings);
                                 }
                             }
@@ -436,9 +507,9 @@ app.registerExtension({
                         align-items: center;
                     `;
 
-                    this.applyPromptTemplate = (templateId) => {
+                    this.applyPromptTemplate = async (templateId) => {
                         this.promptse_data.settings.modelTemplate = templateId;
-                        this.promptse_data.entries = getDefaultTemplateEntries(templateId);
+                        this.promptse_data.entries = await loadTemplateEntries(templateId);
                         this.renderPromptseEntries();
                         this.triggerSlotChanged();
                     };
@@ -461,6 +532,8 @@ app.registerExtension({
 
                     [
                         { value: "ltx23", text: this.getText("templateLtx23") },
+                        { value: "ltx20", text: "LTX2.0" },
+                        { value: "wan22", text: "Wan2.2" },
                         { value: "generic", text: this.getText("templateGeneric") }
                     ].forEach(option => {
                         const optionEl = createEl("option", "", option.text);
@@ -484,8 +557,8 @@ app.registerExtension({
                         cursor: pointer;
                         font-size: 10px;
                     `;
-                    applyTemplateBtn.onclick = () => {
-                        this.applyPromptTemplate(templateSelect.value);
+                    applyTemplateBtn.onclick = async () => {
+                        await this.applyPromptTemplate(templateSelect.value);
                     };
                     
                     // Import lexicon button
@@ -757,7 +830,7 @@ app.registerExtension({
                                 const selectorContainer = createEl("div", "", "");
                                 selectorContainer.style.cssText = `
                                     display: flex;
-                                    align-items: center;
+                                    align-items: flex-start;
                                     gap: 6px;
                                     margin-left: 22px;
                                     margin-bottom: 4px;
@@ -768,9 +841,12 @@ app.registerExtension({
                                     color: ${entry.enabled ? '#bbb' : '#777'};
                                     font-size: 11px;
                                     white-space: nowrap;
+                                    margin-top: 4px;
                                 `;
 
                                 const selector = createEl("select", "", "");
+                                selector.multiple = true;
+                                selector.size = Math.min(5, Math.max(3, entry.options.length));
                                 selector.style.cssText = `
                                     flex: 1;
                                     min-width: 140px;
@@ -782,22 +858,17 @@ app.registerExtension({
                                     font-size: 11px;
                                 `;
 
+                                const selectedSet = new Set(Array.isArray(entry.selectedOptions) ? entry.selectedOptions : []);
                                 entry.options.forEach((optionText) => {
                                     const optionEl = createEl("option", "", optionText);
                                     optionEl.value = optionText;
+                                    optionEl.selected = selectedSet.has(optionText);
                                     selector.appendChild(optionEl);
                                 });
 
-                                const customOption = createEl("option", "", this.getText("customPromptOption"));
-                                customOption.value = "__custom__";
-                                selector.appendChild(customOption);
-
-                                const hasExactMatch = entry.options.includes(entry.content);
-                                selector.value = hasExactMatch ? entry.content : "__custom__";
-
                                 const customInput = createEl("input", "", "");
                                 customInput.type = "text";
-                                customInput.value = hasExactMatch ? "" : entry.content;
+                                customInput.value = "";
                                 customInput.placeholder = this.getText("customPromptPlaceholder");
                                 customInput.style.cssText = `
                                     width: 100%;
@@ -810,34 +881,89 @@ app.registerExtension({
                                     color: #ddd;
                                     font-size: 11px;
                                     box-sizing: border-box;
-                                    display: ${hasExactMatch ? 'none' : 'block'};
                                 `;
+
+                                const actionRow = createEl("div", "", "");
+                                actionRow.style.cssText = `
+                                    display: flex;
+                                    gap: 6px;
+                                    margin-left: 22px;
+                                    margin-bottom: 4px;
+                                `;
+
+                                const applySelectedBtn = createEl("button", "", this.getText("applySelectedTerms"));
+                                applySelectedBtn.style.cssText = `
+                                    padding: 2px 6px;
+                                    background: #444;
+                                    color: #ddd;
+                                    border: 1px solid #666;
+                                    border-radius: 2px;
+                                    cursor: pointer;
+                                    font-size: 10px;
+                                `;
+
+                                const saveInputBtn = createEl("button", "", this.getText("saveInputTerms"));
+                                saveInputBtn.style.cssText = applySelectedBtn.style.cssText;
+
+                                const parseTerms = (text) => text
+                                    .split(/[，,;；\n]/)
+                                    .map((term) => term.trim())
+                                    .filter(Boolean);
+
+                                const syncEntryContent = () => {
+                                    const selectedValues = Array.from(selector.selectedOptions).map((opt) => opt.value.trim()).filter(Boolean);
+                                    const customTerms = parseTerms(customInput.value);
+                                    const merged = Array.from(new Set([...selectedValues, ...customTerms]));
+                                    this.promptse_data.entries[index].selectedOptions = selectedValues;
+                                    this.promptse_data.entries[index].content = merged.join(", ");
+                                };
 
                                 selector.onchange = (e) => {
                                     e.stopPropagation();
-                                    const selected = e.target.value;
-                                    if (selected === "__custom__") {
-                                        customInput.style.display = "block";
-                                        this.promptse_data.entries[index].content = customInput.value.trim() || entry.content;
-                                    } else {
-                                        customInput.style.display = "none";
-                                        this.promptse_data.entries[index].content = selected;
+                                    syncEntryContent();
+                                    this.updateOutputPreview();
+                                    this.triggerSlotChanged();
+                                };
+
+                                applySelectedBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    syncEntryContent();
+                                    this.renderPromptseEntries();
+                                    this.triggerSlotChanged();
+                                };
+
+                                saveInputBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    const customTerms = parseTerms(customInput.value);
+                                    if (customTerms.length === 0) {
+                                        return;
                                     }
+                                    const optionSet = new Set(this.promptse_data.entries[index].options || []);
+                                    customTerms.forEach((term) => optionSet.add(term));
+                                    this.promptse_data.entries[index].options = Array.from(optionSet);
+                                    this.promptse_data.entries[index].selectedOptions = Array.from(new Set([
+                                        ...(this.promptse_data.entries[index].selectedOptions || []),
+                                        ...customTerms
+                                    ]));
+                                    syncEntryContent();
                                     this.renderPromptseEntries();
                                     this.triggerSlotChanged();
                                 };
 
                                 customInput.oninput = (e) => {
                                     e.stopPropagation();
-                                    this.promptse_data.entries[index].content = e.target.value;
+                                    syncEntryContent();
                                     this.updateOutputPreview();
                                     this.triggerSlotChanged();
                                 };
 
                                 selectorContainer.appendChild(selectorLabel);
                                 selectorContainer.appendChild(selector);
+                                actionRow.appendChild(applySelectedBtn);
+                                actionRow.appendChild(saveInputBtn);
                                 entryCard.appendChild(selectorContainer);
                                 entryCard.appendChild(customInput);
+                                entryCard.appendChild(actionRow);
                             }
 
                             entryCard.appendChild(contentPreview);
@@ -876,16 +1002,22 @@ app.registerExtension({
                         return content;
                     };
                     
+                    this.generateLLMPromptText = (parts) => {
+                        if (!parts || parts.length === 0) {
+                            return "";
+                        }
+                        return `Generate a complete high-quality prompt using the following selected terms: ${parts.join(", ")}`;
+                    };
+
                     // Function to update output preview
                     this.updateOutputPreview = () => {
                         const mode = this.promptse_data.settings.mode;
                         const connector = this.promptse_data.settings.connector;
                         const entries = this.promptse_data.entries;
-                        
+
                         let finalParts = [];
-                        
+
                         if (mode === "S") {
-                            // Single mode: find the first enabled entry
                             for (let entry of entries) {
                                 if (entry.enabled) {
                                     const formatted = this.formatContentWithWeight(entry.content, entry.weight);
@@ -896,7 +1028,6 @@ app.registerExtension({
                                 }
                             }
                         } else {
-                            // Multiple mode: concatenate all enabled entries
                             for (let entry of entries) {
                                 if (entry.enabled) {
                                     const formatted = this.formatContentWithWeight(entry.content, entry.weight);
@@ -906,15 +1037,18 @@ app.registerExtension({
                                 }
                             }
                         }
-                        
+
                         const outputText = finalParts.join(connector);
+                        const llmPromptText = this.generateLLMPromptText(finalParts);
                         if (this.outputPreview) {
                             this.outputPreview.textContent = outputText || "(empty)";
                         }
-                        
-                        // Debug log to see what connector is being used
+                        if (this.generatedPromptPreview) {
+                            this.generatedPromptPreview.textContent = llmPromptText || "(empty)";
+                        }
+
                         console.log("PromptSE: Output generated with connector:", JSON.stringify(connector), "weight format:", this.promptse_data.settings.weightFormat);
-                        
+
                         return outputText;
                     };
                     
@@ -1895,8 +2029,27 @@ app.registerExtension({
                         min-height: 16px;
                     `;
                     
+                    const generatedPromptLabel = createEl("div", "", this.getText("generatedPrompt"));
+                    generatedPromptLabel.style.cssText = `
+                        font-size: 10px;
+                        color: #999;
+                        margin: 6px 0 4px;
+                        font-weight: 400;
+                    `;
+
+                    this.generatedPromptPreview = createEl("div", "", "");
+                    this.generatedPromptPreview.style.cssText = `
+                        font-size: 11px;
+                        color: #b9d8ff;
+                        line-height: 1.3;
+                        word-wrap: break-word;
+                        min-height: 16px;
+                    `;
+
                     this.outputSection.appendChild(outputLabel);
                     this.outputSection.appendChild(this.outputPreview);
+                    this.outputSection.appendChild(generatedPromptLabel);
+                    this.outputSection.appendChild(this.generatedPromptPreview);
                     outputSection = this.outputSection;
                     
                     // Create controls with modern styling
@@ -2125,6 +2278,9 @@ app.registerExtension({
                 
                 if (obj.promptse_data) {
                     this.promptse_data = obj.promptse_data;
+                    if (this.normalizePromptseEntries) {
+                        this.normalizePromptseEntries();
+                    }
                     // Ensure new settings are present
                     if (!this.promptse_data.settings) {
                         this.promptse_data.settings = {};
