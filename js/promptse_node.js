@@ -10,13 +10,112 @@ function createEl(tag, className = "", text = "") {
 
 function getDefaultTemplateEntries(templateId) {
     if (templateId === "ltx23") {
-        return [{
-            id: `entry_${Date.now()}`,
-            title: "LTX2.3 结构化提示词",
-            content: "风格 / 画幅\n镜头角度 + 运镜\n角色：年龄、外貌、穿着\n场景：地点、时间、光线\n具体动作\n具体物理声音\n对话",
-            enabled: true,
-            weight: 1.0
-        }];
+        return [
+            {
+                id: "ltx23_shot",
+                title: "镜头类型 / Shot Type",
+                content: "cinematic medium close-up shot",
+                enabled: true,
+                weight: 1.1,
+                options: [
+                    "cinematic medium close-up shot",
+                    "wide establishing shot",
+                    "over-the-shoulder shot",
+                    "low-angle hero shot"
+                ]
+            },
+            {
+                id: "ltx23_subject",
+                title: "主体与动作 / Subject + Action",
+                content: "a young woman in a white coat walks slowly toward the camera and gently smiles",
+                enabled: true,
+                weight: 1.2,
+                options: [
+                    "a young woman in a white coat walks slowly toward the camera and gently smiles",
+                    "an old fisherman raises his lantern and looks into the storm",
+                    "a robot assistant organizes books while glancing at the viewer",
+                    "two friends run across the station platform and wave"
+                ]
+            },
+            {
+                id: "ltx23_scene",
+                title: "场景与时间 / Scene + Time",
+                content: "in a modern city street at dusk, wet asphalt reflecting neon signs",
+                enabled: true,
+                weight: 1.1,
+                options: [
+                    "in a modern city street at dusk, wet asphalt reflecting neon signs",
+                    "inside an old library at golden hour with dust floating in sunbeams",
+                    "on a snowy mountain ridge during blue hour",
+                    "in a crowded night market with colorful stalls"
+                ]
+            },
+            {
+                id: "ltx23_lighting",
+                title: "光照与氛围 / Lighting + Mood",
+                content: "soft volumetric lighting, realistic shadows, calm cinematic mood",
+                enabled: true,
+                weight: 1.0,
+                options: [
+                    "soft volumetric lighting, realistic shadows, calm cinematic mood",
+                    "high-contrast noir lighting, dramatic tension",
+                    "warm sunset backlight, nostalgic atmosphere",
+                    "cold moonlight with subtle fog, mysterious mood"
+                ]
+            },
+            {
+                id: "ltx23_motion",
+                title: "相机运动 / Camera Motion",
+                content: "slow dolly-in, subtle handheld micro-shake",
+                enabled: true,
+                weight: 1.0,
+                options: [
+                    "slow dolly-in, subtle handheld micro-shake",
+                    "smooth tracking shot from left to right",
+                    "steady locked-off camera",
+                    "slow crane-down reveal"
+                ]
+            },
+            {
+                id: "ltx23_style",
+                title: "画面风格 / Visual Style",
+                content: "highly detailed, natural skin texture, filmic color grading, physically plausible",
+                enabled: true,
+                weight: 1.1,
+                options: [
+                    "highly detailed, natural skin texture, filmic color grading, physically plausible",
+                    "clean commercial look, crisp contrast, premium ad style",
+                    "vintage film emulation, soft grain, muted palette",
+                    "documentary realism, natural tones, minimal stylization"
+                ]
+            },
+            {
+                id: "ltx23_temporal",
+                title: "时序稳定 / Temporal Coherence",
+                content: "consistent motion across the whole clip, smooth temporal coherence",
+                enabled: true,
+                weight: 1.0,
+                options: [
+                    "consistent motion across the whole clip, smooth temporal coherence",
+                    "stable character identity across frames",
+                    "continuous motion path without sudden jumps",
+                    "consistent lighting and shadows over time"
+                ]
+            },
+            {
+                id: "ltx23_negative",
+                title: "避免项 / Avoid",
+                content: "no text, no logo, no watermark, no extra fingers, no deformed face, no flicker, no jitter",
+                enabled: true,
+                weight: 1.0,
+                options: [
+                    "no text, no logo, no watermark, no extra fingers, no deformed face, no flicker, no jitter",
+                    "no duplicated limbs, no morphing artifacts",
+                    "no extreme motion blur, no frame tearing",
+                    "no floating objects, no anatomy errors"
+                ]
+            }
+        ];
     }
 
     return [
@@ -119,6 +218,9 @@ app.registerExtension({
                             pipe: "管道符 (|)",
                             space: "空格",
                             customConnector: "自定义连接符",
+                            quickSelect: "快捷选择",
+                            customPromptOption: "自定义输入...",
+                            customPromptPlaceholder: "输入自定义提示词",
                             
                             // 权重格式
                             weightFormat: "权重格式",
@@ -196,6 +298,9 @@ app.registerExtension({
                             pipe: "Pipe (|)",
                             space: "Space",
                             customConnector: "Custom Connector",
+                            quickSelect: "Quick Select",
+                            customPromptOption: "Custom input...",
+                            customPromptPlaceholder: "Enter custom prompt",
                             
                             // Weight format
                             weightFormat: "Weight Format",
@@ -643,14 +748,103 @@ app.registerExtension({
                                 font-size: 11px;
                                 margin-left: 22px;
                                 line-height: 1.3;
+                                margin-bottom: 4px;
                             `;
                             
                             entryCard.appendChild(headerRow);
+
+                            if (Array.isArray(entry.options) && entry.options.length > 0) {
+                                const selectorContainer = createEl("div", "", "");
+                                selectorContainer.style.cssText = `
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 6px;
+                                    margin-left: 22px;
+                                    margin-bottom: 4px;
+                                `;
+
+                                const selectorLabel = createEl("span", "", this.getText("quickSelect"));
+                                selectorLabel.style.cssText = `
+                                    color: ${entry.enabled ? '#bbb' : '#777'};
+                                    font-size: 11px;
+                                    white-space: nowrap;
+                                `;
+
+                                const selector = createEl("select", "", "");
+                                selector.style.cssText = `
+                                    flex: 1;
+                                    min-width: 140px;
+                                    padding: 2px 4px;
+                                    background: #333;
+                                    border: 1px solid #555;
+                                    border-radius: 2px;
+                                    color: #ddd;
+                                    font-size: 11px;
+                                `;
+
+                                entry.options.forEach((optionText) => {
+                                    const optionEl = createEl("option", "", optionText);
+                                    optionEl.value = optionText;
+                                    selector.appendChild(optionEl);
+                                });
+
+                                const customOption = createEl("option", "", this.getText("customPromptOption"));
+                                customOption.value = "__custom__";
+                                selector.appendChild(customOption);
+
+                                const hasExactMatch = entry.options.includes(entry.content);
+                                selector.value = hasExactMatch ? entry.content : "__custom__";
+
+                                const customInput = createEl("input", "", "");
+                                customInput.type = "text";
+                                customInput.value = hasExactMatch ? "" : entry.content;
+                                customInput.placeholder = this.getText("customPromptPlaceholder");
+                                customInput.style.cssText = `
+                                    width: 100%;
+                                    margin-left: 22px;
+                                    margin-bottom: 4px;
+                                    padding: 4px 6px;
+                                    background: #333;
+                                    border: 1px solid #555;
+                                    border-radius: 2px;
+                                    color: #ddd;
+                                    font-size: 11px;
+                                    box-sizing: border-box;
+                                    display: ${hasExactMatch ? 'none' : 'block'};
+                                `;
+
+                                selector.onchange = (e) => {
+                                    e.stopPropagation();
+                                    const selected = e.target.value;
+                                    if (selected === "__custom__") {
+                                        customInput.style.display = "block";
+                                        this.promptse_data.entries[index].content = customInput.value.trim() || entry.content;
+                                    } else {
+                                        customInput.style.display = "none";
+                                        this.promptse_data.entries[index].content = selected;
+                                    }
+                                    this.renderPromptseEntries();
+                                    this.triggerSlotChanged();
+                                };
+
+                                customInput.oninput = (e) => {
+                                    e.stopPropagation();
+                                    this.promptse_data.entries[index].content = e.target.value;
+                                    this.updateOutputPreview();
+                                    this.triggerSlotChanged();
+                                };
+
+                                selectorContainer.appendChild(selectorLabel);
+                                selectorContainer.appendChild(selector);
+                                entryCard.appendChild(selectorContainer);
+                                entryCard.appendChild(customInput);
+                            }
+
                             entryCard.appendChild(contentPreview);
                             
                             // Edit on click (excluding controls)
                             entryCard.onclick = (e) => {
-                                if (e.target !== checkbox && !e.target.closest('.weight-controls')) {
+                                if (e.target !== checkbox && !e.target.closest('.weight-controls') && e.target.tagName !== 'SELECT' && e.target.tagName !== 'OPTION' && e.target.tagName !== 'INPUT') {
                                     this.editPromptseEntry(index);
                                 }
                             };
