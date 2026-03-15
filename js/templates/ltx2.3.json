@@ -1,0 +1,9 @@
+{
+  "model": "ltx2.3",
+  "entries": [
+    { "title": "主体", "content": "cinematic portrait of a cyberpunk explorer", "enabled": true, "weight": 1.0 },
+    { "title": "镜头", "content": "35mm lens, close-up, shallow depth of field", "enabled": true, "weight": 1.0 },
+    { "title": "光照", "content": "neon rim light, volumetric fog, soft key light", "enabled": true, "weight": 1.1 },
+    { "title": "画质", "content": "ultra detailed, 8k, high dynamic range", "enabled": true, "weight": 1.0 }
+  ]
+}
