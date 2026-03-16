@@ -196,7 +196,9 @@ app.registerExtension({
                                 weightFormat: "parentheses",
                                 showOutputPreview: false, // Default to hidden
                                 language: "zh", // Default language
-                                modelTemplate: "ltx23"
+                                modelTemplate: "ltx23",
+                                llmModel: "gpt-4o-mini",
+                                userLanguageInput: ""
                             },
                             lexicon: []
                         };
@@ -222,6 +224,12 @@ app.registerExtension({
                         }
                         if (!this.promptse_data.settings.hasOwnProperty('modelTemplate')) {
                             this.promptse_data.settings.modelTemplate = "ltx23";
+                        }
+                        if (!this.promptse_data.settings.hasOwnProperty('llmModel')) {
+                            this.promptse_data.settings.llmModel = "gpt-4o-mini";
+                        }
+                        if (!this.promptse_data.settings.hasOwnProperty('userLanguageInput')) {
+                            this.promptse_data.settings.userLanguageInput = "";
                         }
                         if (!this.promptse_data.lexicon) {
                             this.promptse_data.lexicon = [];
@@ -1082,7 +1090,11 @@ app.registerExtension({
                         if (!parts || parts.length === 0) {
                             return "";
                         }
-                        return `Generate a complete high-quality prompt using the following selected terms: ${parts.join(", ")}`;
+                        const language = this.promptse_data.settings.language || "zh";
+                        const llmModelRaw = this.promptse_data.settings.llmModel || "gpt-4o-mini";
+                        const llmModel = typeof llmModelRaw === "object" ? (llmModelRaw.name || "gpt-4o-mini") : llmModelRaw;
+                        const userLanguageInput = (this.promptse_data.settings.userLanguageInput || "").trim();
+                        return `Model=${llmModel}; Task=video_prompt_generation; Language=${language}. Combine ALL selected terms into one coherent video generation prompt. Preserve key visual, motion, lighting, audio, and negative constraints. Selected terms: ${parts.join(", ")}. User language input: ${userLanguageInput || "None"}. Output only the final polished prompt text.`;
                     };
 
                     // Function to update output preview
@@ -2060,7 +2072,9 @@ app.registerExtension({
                                 weightFormat: "parentheses",
                                 showOutputPreview: false,
                                 language: "zh",
-                                modelTemplate: "ltx23"
+                                modelTemplate: "ltx23",
+                                llmModel: "gpt-4o-mini",
+                                userLanguageInput: ""
                             },
                             lexicon: []
                         };
