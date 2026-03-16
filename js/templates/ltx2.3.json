@@ -2,99 +2,191 @@
   "model": "ltx2.3",
   "entries": [
     {
-      "title": "镜头类型 / Shot Type",
-      "content": "cinematic medium close-up shot",
+      "title": "景别 / Shot Size",
+      "content": "medium close-up",
       "enabled": true,
       "weight": 1.1,
       "options": [
-        "cinematic medium close-up shot",
-        "wide establishing shot",
+        "extreme wide shot",
+        "wide shot",
+        "medium shot",
+        "medium close-up",
+        "close-up",
         "over-the-shoulder shot",
-        "low-angle hero shot"
+        "establishing shot",
+        "drone shot"
       ]
     },
     {
-      "title": "主体与动作 / Subject + Action",
-      "content": "a young woman in a white coat walks slowly toward the camera and gently smiles",
+      "title": "镜头焦距 / Lens",
+      "content": "35mm standard",
+      "enabled": true,
+      "weight": 1.0,
+      "options": [
+        "24mm wide",
+        "35mm standard",
+        "50mm normal",
+        "85mm portrait",
+        "135mm tele",
+        "macro shot"
+      ]
+    },
+    {
+      "title": "景深与对焦 / DOF + Focus",
+      "content": "shallow depth of field, focus on eyes",
+      "enabled": true,
+      "weight": 1.0,
+      "options": [
+        "shallow depth of field",
+        "deep depth of field",
+        "beautiful bokeh",
+        "creamy bokeh",
+        "rack focus",
+        "focus on eyes"
+      ]
+    },
+    {
+      "title": "场景地点 / Location",
+      "content": "bustling city street",
+      "enabled": true,
+      "weight": 1.1,
+      "options": [
+        "bustling city street",
+        "quiet alley",
+        "cozy café",
+        "quiet library",
+        "rooftop",
+        "sandy beach",
+        "dense forest",
+        "space station"
+      ]
+    },
+    {
+      "title": "时间与天气 / Time + Weather",
+      "content": "dusk, light rain",
+      "enabled": true,
+      "weight": 1.0,
+      "options": [
+        "dawn",
+        "golden hour",
+        "dusk",
+        "blue hour",
+        "night",
+        "rainy afternoon",
+        "snowy night",
+        "foggy morning"
+      ]
+    },
+    {
+      "title": "角色定义 / Character",
+      "content": "young adult woman, long wavy hair, white trench coat",
       "enabled": true,
       "weight": 1.2,
       "options": [
-        "a young woman in a white coat walks slowly toward the camera and gently smiles",
-        "an old fisherman raises his lantern and looks into the storm",
-        "a robot assistant organizes books while glancing at the viewer",
-        "two friends run across the station platform and wave"
+        "young adult woman, long wavy hair, white trench coat",
+        "young adult man, short textured hair, black leather jacket",
+        "middle-aged detective, formal suit, tired eyes",
+        "teenager, school uniform, backpack",
+        "elderly fisherman, weathered face, wool coat"
       ]
     },
     {
-      "title": "场景与时间 / Scene + Time",
-      "content": "in a modern city street at dusk, wet asphalt reflecting neon signs",
+      "title": "动作描述 / Action",
+      "content": "walking slowly, turning head, gentle smile",
       "enabled": true,
       "weight": 1.1,
       "options": [
-        "in a modern city street at dusk, wet asphalt reflecting neon signs",
-        "inside an old library at golden hour with dust floating in sunbeams",
-        "on a snowy mountain ridge during blue hour",
-        "in a crowded night market with colorful stalls"
+        "walking",
+        "walking briskly",
+        "running",
+        "waving",
+        "nodding",
+        "looking around",
+        "turning around",
+        "picking up"
       ]
     },
     {
-      "title": "光照与氛围 / Lighting + Mood",
-      "content": "soft volumetric lighting, realistic shadows, calm cinematic mood",
-      "enabled": true,
-      "weight": 1.0,
-      "options": [
-        "soft volumetric lighting, realistic shadows, calm cinematic mood",
-        "high-contrast noir lighting, dramatic tension",
-        "warm sunset backlight, nostalgic atmosphere",
-        "cold moonlight with subtle fog, mysterious mood"
-      ]
-    },
-    {
-      "title": "相机运动 / Camera Motion",
-      "content": "slow dolly-in, subtle handheld micro-shake",
-      "enabled": true,
-      "weight": 1.0,
-      "options": [
-        "slow dolly-in, subtle handheld micro-shake",
-        "smooth tracking shot from left to right",
-        "steady locked-off camera",
-        "slow crane-down reveal"
-      ]
-    },
-    {
-      "title": "画面风格 / Visual Style",
-      "content": "highly detailed, natural skin texture, filmic color grading, physically plausible",
+      "title": "镜头运动 / Camera Movement",
+      "content": "slow dolly in, side tracking",
       "enabled": true,
       "weight": 1.1,
       "options": [
-        "highly detailed, natural skin texture, filmic color grading, physically plausible",
-        "clean commercial look, crisp contrast, premium ad style",
-        "vintage film emulation, soft grain, muted palette",
-        "documentary realism, natural tones, minimal stylization"
+        "static",
+        "slow dolly in",
+        "slow dolly out",
+        "pan left",
+        "pan right",
+        "side tracking",
+        "steadicam follow",
+        "crane down",
+        "slow zoom in"
       ]
     },
     {
-      "title": "时序稳定 / Temporal Coherence",
-      "content": "consistent motion across the whole clip, smooth temporal coherence",
+      "title": "光线设计 / Lighting",
+      "content": "golden hour, volumetric light, rim light",
       "enabled": true,
-      "weight": 1.0,
+      "weight": 1.1,
       "options": [
-        "consistent motion across the whole clip, smooth temporal coherence",
-        "stable character identity across frames",
-        "continuous motion path without sudden jumps",
-        "consistent lighting and shadows over time"
+        "window light",
+        "golden hour",
+        "moonlight",
+        "dappled light through trees",
+        "volumetric light",
+        "backlight",
+        "rim light",
+        "neon light",
+        "street light"
       ]
     },
     {
-      "title": "避免项 / Avoid",
-      "content": "no text, no logo, no watermark, no extra fingers, no deformed face, no flicker, no jitter",
+      "title": "音频氛围 / Audio",
+      "content": "city ambience, footsteps echoing, soft cinematic background music",
       "enabled": true,
       "weight": 1.0,
       "options": [
-        "no text, no logo, no watermark, no extra fingers, no deformed face, no flicker, no jitter",
-        "no duplicated limbs, no morphing artifacts",
-        "no extreme motion blur, no frame tearing",
-        "no floating objects, no anatomy errors"
+        "rain falling",
+        "wind blowing",
+        "city ambience",
+        "crowd chattering",
+        "footsteps echoing",
+        "silence",
+        "piano background score",
+        "ambient cinematic music"
+      ]
+    },
+    {
+      "title": "画面风格 / Style",
+      "content": "cinematic look, film grain, anamorphic",
+      "enabled": true,
+      "weight": 1.1,
+      "options": [
+        "cinematic look",
+        "film grain",
+        "35mm film",
+        "anamorphic",
+        "film noir",
+        "documentary",
+        "commercial",
+        "IMAX"
+      ]
+    },
+    {
+      "title": "避免项 / Negative",
+      "content": "no text, no logo, no watermark, no flicker, no jitter, no deformed face",
+      "enabled": true,
+      "weight": 1.0,
+      "options": [
+        "no text",
+        "no logo",
+        "no watermark",
+        "no extra fingers",
+        "no deformed face",
+        "no duplicated limbs",
+        "no flicker",
+        "no jitter",
+        "no frame tearing"
       ]
     }
   ]
