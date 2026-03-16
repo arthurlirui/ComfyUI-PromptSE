@@ -827,13 +827,16 @@ app.registerExtension({
                             entryCard.appendChild(headerRow);
 
                             if (Array.isArray(entry.options) && entry.options.length > 0) {
+                                const selectedSet = new Set(Array.isArray(entry.selectedOptions) ? entry.selectedOptions : []);
+
                                 const selectorContainer = createEl("div", "", "");
                                 selectorContainer.style.cssText = `
                                     display: flex;
-                                    align-items: flex-start;
+                                    align-items: center;
                                     gap: 6px;
                                     margin-left: 22px;
                                     margin-bottom: 4px;
+                                    position: relative;
                                 `;
 
                                 const selectorLabel = createEl("span", "", this.getText("quickSelect"));
@@ -841,30 +844,45 @@ app.registerExtension({
                                     color: ${entry.enabled ? '#bbb' : '#777'};
                                     font-size: 11px;
                                     white-space: nowrap;
-                                    margin-top: 4px;
                                 `;
 
-                                const selector = createEl("select", "", "");
-                                selector.multiple = true;
-                                selector.size = Math.min(5, Math.max(3, entry.options.length));
-                                selector.style.cssText = `
+                                const dropdown = createEl("div", "promptse-dropdown", "");
+                                dropdown.style.cssText = `
+                                    position: relative;
                                     flex: 1;
-                                    min-width: 140px;
-                                    padding: 2px 4px;
+                                    min-width: 160px;
+                                `;
+
+                                const dropdownBtn = createEl("button", "", "");
+                                dropdownBtn.type = "button";
+                                dropdownBtn.style.cssText = `
+                                    width: 100%;
+                                    padding: 4px 8px;
                                     background: #333;
                                     border: 1px solid #555;
-                                    border-radius: 2px;
+                                    border-radius: 4px;
                                     color: #ddd;
                                     font-size: 11px;
+                                    cursor: pointer;
+                                    text-align: left;
                                 `;
 
-                                const selectedSet = new Set(Array.isArray(entry.selectedOptions) ? entry.selectedOptions : []);
-                                entry.options.forEach((optionText) => {
-                                    const optionEl = createEl("option", "", optionText);
-                                    optionEl.value = optionText;
-                                    optionEl.selected = selectedSet.has(optionText);
-                                    selector.appendChild(optionEl);
-                                });
+                                const dropdownContent = createEl("div", "dropdown-content", "");
+                                dropdownContent.style.cssText = `
+                                    display: none;
+                                    position: absolute;
+                                    top: calc(100% + 4px);
+                                    left: 0;
+                                    right: 0;
+                                    max-height: 180px;
+                                    overflow-y: auto;
+                                    background: #2b2b2b;
+                                    border: 1px solid #555;
+                                    border-radius: 4px;
+                                    padding: 4px;
+                                    z-index: 30;
+                                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+                                `;
 
                                 const customInput = createEl("input", "", "");
                                 customInput.type = "text";
@@ -891,8 +909,8 @@ app.registerExtension({
                                     margin-bottom: 4px;
                                 `;
 
-                                const applySelectedBtn = createEl("button", "", this.getText("applySelectedTerms"));
-                                applySelectedBtn.style.cssText = `
+                                const saveInputBtn = createEl("button", "", this.getText("saveInputTerms"));
+                                saveInputBtn.style.cssText = `
                                     padding: 2px 6px;
                                     background: #444;
                                     color: #ddd;
@@ -902,33 +920,87 @@ app.registerExtension({
                                     font-size: 10px;
                                 `;
 
-                                const saveInputBtn = createEl("button", "", this.getText("saveInputTerms"));
-                                saveInputBtn.style.cssText = applySelectedBtn.style.cssText;
-
                                 const parseTerms = (text) => text
                                     .split(/[，,;；\n]/)
                                     .map((term) => term.trim())
                                     .filter(Boolean);
 
-                                const syncEntryContent = () => {
-                                    const selectedValues = Array.from(selector.selectedOptions).map((opt) => opt.value.trim()).filter(Boolean);
-                                    const customTerms = parseTerms(customInput.value);
-                                    const merged = Array.from(new Set([...selectedValues, ...customTerms]));
-                                    this.promptse_data.entries[index].selectedOptions = selectedValues;
-                                    this.promptse_data.entries[index].content = merged.join(", ");
+                                const updateDropdownButtonText = () => {
+                                    const selectedValues = Array.from(selectedSet);
+                                    dropdownBtn.textContent = selectedValues.length > 0
+                                        ? selectedValues.join(" | ")
+                                        : this.getText("applySelectedTerms");
                                 };
 
-                                selector.onchange = (e) => {
+                                const syncEntryContent = () => {
+                                    const customTerms = parseTerms(customInput.value);
+                                    const merged = Array.from(new Set([...selectedSet, ...customTerms]));
+                                    this.promptse_data.entries[index].selectedOptions = Array.from(selectedSet);
+                                    this.promptse_data.entries[index].content = merged.join(", ");
+                                    updateDropdownButtonText();
+                                };
+
+                                const closeDropdown = (e) => {
+                                    if (!dropdown.contains(e.target)) {
+                                        dropdownContent.style.display = "none";
+                                        document.removeEventListener("click", closeDropdown);
+                                    }
+                                };
+
+                                dropdownBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    const isOpen = dropdownContent.style.display === "block";
+                                    if (isOpen) {
+                                        dropdownContent.style.display = "none";
+                                        document.removeEventListener("click", closeDropdown);
+                                        return;
+                                    }
+
+                                    dropdownContent.style.display = "block";
+                                    document.addEventListener("click", closeDropdown);
+                                };
+
+                                entry.options.forEach((optionText) => {
+                                    const item = createEl("label", "", "");
+                                    item.style.cssText = `
+                                        display: flex;
+                                        align-items: flex-start;
+                                        gap: 6px;
+                                        padding: 3px 4px;
+                                        cursor: pointer;
+                                        color: #ddd;
+                                        font-size: 11px;
+                                    `;
+
+                                    const check = createEl("input", "", "");
+                                    check.type = "checkbox";
+                                    check.checked = selectedSet.has(optionText);
+                                    check.style.marginTop = "2px";
+
+                                    const optionTextEl = createEl("span", "", optionText);
+                                    optionTextEl.style.lineHeight = "1.3";
+
+                                    check.onchange = (e) => {
+                                        e.stopPropagation();
+                                        if (check.checked) {
+                                            selectedSet.add(optionText);
+                                        } else {
+                                            selectedSet.delete(optionText);
+                                        }
+                                        syncEntryContent();
+                                        this.updateOutputPreview();
+                                        this.triggerSlotChanged();
+                                    };
+
+                                    item.appendChild(check);
+                                    item.appendChild(optionTextEl);
+                                    dropdownContent.appendChild(item);
+                                });
+
+                                customInput.oninput = (e) => {
                                     e.stopPropagation();
                                     syncEntryContent();
                                     this.updateOutputPreview();
-                                    this.triggerSlotChanged();
-                                };
-
-                                applySelectedBtn.onclick = (e) => {
-                                    e.stopPropagation();
-                                    syncEntryContent();
-                                    this.renderPromptseEntries();
                                     this.triggerSlotChanged();
                                 };
 
@@ -950,16 +1022,11 @@ app.registerExtension({
                                     this.triggerSlotChanged();
                                 };
 
-                                customInput.oninput = (e) => {
-                                    e.stopPropagation();
-                                    syncEntryContent();
-                                    this.updateOutputPreview();
-                                    this.triggerSlotChanged();
-                                };
-
+                                updateDropdownButtonText();
+                                dropdown.appendChild(dropdownBtn);
+                                dropdown.appendChild(dropdownContent);
                                 selectorContainer.appendChild(selectorLabel);
-                                selectorContainer.appendChild(selector);
-                                actionRow.appendChild(applySelectedBtn);
+                                selectorContainer.appendChild(dropdown);
                                 actionRow.appendChild(saveInputBtn);
                                 entryCard.appendChild(selectorContainer);
                                 entryCard.appendChild(customInput);
@@ -970,7 +1037,16 @@ app.registerExtension({
                             
                             // Edit on click (excluding controls)
                             entryCard.onclick = (e) => {
-                                if (e.target !== checkbox && !e.target.closest('.weight-controls') && e.target.tagName !== 'SELECT' && e.target.tagName !== 'OPTION' && e.target.tagName !== 'INPUT') {
+                                if (
+                                    e.target !== checkbox
+                                    && !e.target.closest('.weight-controls')
+                                    && e.target.tagName !== 'SELECT'
+                                    && e.target.tagName !== 'OPTION'
+                                    && e.target.tagName !== 'INPUT'
+                                    && e.target.tagName !== 'BUTTON'
+                                    && !e.target.closest('.promptse-dropdown')
+                                    && !e.target.closest('.dropdown-content')
+                                ) {
                                     this.editPromptseEntry(index);
                                 }
                             };
