@@ -1,287 +1,595 @@
 {
-  "entries": [
+    "entries":
+    [
+        {
+            "id": "ltx23_entry_01",
+            "title": "景别 / Shot Size",
+            "content": "medium close-up",
+            "enabled": true,
+            "weight": 1.1,
+            "options":
+            [
+                "extreme wide shot",
+                "very wide shot",
+                "wide shot",
+                "full body shot",
+                "medium close-up",
+                "medium shot",
+                "medium close-up",
+                "close-up",
+                "extreme close-up",
+                "detail shot",
+                "over-the-shoulder shot",
+                "subjective angle",
+                "American shot",
+                "Italian shot",
+                "cowboy shot",
+                "portrait shot",
+                "environmental portrait",
+                "insert shot",
+                "establishing shot",
+                "re-establishing shot",
+                "drone shot",
+                "two shot",
+                "three shot",
+                "group shot",
+                "single shot",
+                "isolated shot",
+                "intimate shot",
+                "voyeur shot",
+                "keyhole shot",
+                "telescope shot",
+                "telephoto shot",
+                "microscope shot",
+                "aerial shot",
+                "satellite shot",
+                "car mount shot",
+                "steadicam shot",
+                "shoulder mount shot",
+                "dolly shot",
+                "crane shot",
+                "technocrane shot",
+                "underwater shot",
+                "split diopter shot",
+                "anamorphic shot",
+                "IMAX shot",
+                "360-degree shot",
+                "fisheye shot",
+                "macro shot",
+                "wide angle shot"
+            ]
+        },
+        {
+            "id": "ltx23_entry_02",
+            "title": "镜头焦距 / Lens",
+            "content": "35mm standard",
+            "enabled": true,
+            "weight": 1.0,
+            "options":
+            [
+                "8mm fisheye",
+                "14mm ultra-wide",
+                "16mm wide",
+                "20mm wide",
+                "24mm wide",
+                "28mm wide",
+                "35mm standard",
+                "40mm standard",
+                "50mm normal",
+                "58mm normal",
+                "75mm short tele",
+                "85mm portrait",
+                "100mm macro",
+                "105mm portrait",
+                "135mm tele",
+                "180mm tele",
+                "200mm tele",
+                "300mm super-tele",
+                "400mm super-tele",
+                "600mm super-tele",
+                "16-35mm zoom",
+                "24-70mm zoom",
+                "70-200mm zoom",
+                "24-105mm zoom",
+                "100-400mm zoom",
+                "anamorphic 35mm",
+                "anamorphic 50mm",
+                "anamorphic 75mm",
+                "anamorphic 100mm",
+                "tilt-shift lens"
+            ]
+        },
+        {
+            "id": "ltx23_entry_03",
+            "title": "景深与对焦 / DOF + Focus",
+            "content": "shallow depth of field, focus on eyes",
+            "enabled": true,
+            "weight": 1.0,
+            "options":
+            [
+                "extreme shallow depth of field",
+                "shallow depth of field",
+                "medium depth of field",
+                "deep depth of field",
+                "infinite depth of field",
+                "selective focus",
+                "beautiful bokeh",
+                "creamy bokeh",
+                "bubble bokeh",
+                "swirly bokeh",
+                "foreground blur",
+                "background blur",
+                "everything in focus",
+                "focus on eyes",
+                "focus on hands",
+                "focus on product",
+                "soft focus",
+                "sharp focus",
+                "progressive focus",
+                "split focus"
+            ]
+        },
+        {
+            "id": "ltx23_entry_04",
+            "title": "场景地点 / Location",
+            "content": "bustling city street",
+            "enabled": true,
+            "weight": 1.1,
+            "options":
+            [
+                "bustling city street",
+                "quiet alley",
+                "business district",
+                "old town",
+                "shopping mall",
+                "local market",
+                "subway station",
+                "pedestrian bridge",
+                "parking garage",
+                "rooftop",
+                "cozy café",
+                "elegant restaurant",
+                "dimly lit bar",
+                "luxury hotel lobby",
+                "modern office",
+                "conference room",
+                "quiet library",
+                "bookstore",
+                "art gallery",
+                "museum",
+                "theater",
+                "cinema",
+                "gym",
+                "swimming pool",
+                "spa",
+                "hospital",
+                "school",
+                "classroom",
+                "laboratory",
+                "artist studio",
+                "sandy beach",
+                "mountain range",
+                "dense forest",
+                "serene lake",
+                "flowing river",
+                "waterfall",
+                "vast desert",
+                "endless prairie",
+                "deep canyon",
+                "mysterious cave",
+                "glacier",
+                "volcano",
+                "hot spring",
+                "beautiful garden",
+                "city park",
+                "space station",
+                "spaceship",
+                "alien planet surface",
+                "underwater",
+                "dreamscape",
+                "memory space",
+                "virtual reality",
+                "parallel universe",
+                "time tunnel",
+                "magical realm"
+            ]
+        },
+        {
+            "id": "ltx23_entry_05",
+            "title": "时间/ Time",
+            "content": "dusk, light rain",
+            "enabled": true,
+            "weight": 1.0,
+            "options":
+            [
+                "dawn",
+                "sunrise",
+                "early morning",
+                "late morning",
+                "noon",
+                "afternoon",
+                "golden hour",
+                "sunset",
+                "dusk",
+                "blue hour",
+                "night",
+                "midnight",
+                "full moon night",
+                "new moon night",
+                "starry night",
+                "aurora night",
+                "stormy night",
+                "foggy morning",
+                "rainy afternoon",
+                "snowy night",
+                "sandstorm",
+                "solar eclipse",
+                "lunar eclipse",
+                "eternal twilight"
+            ]
+        },
+        {
+            "id": "ltx23_entry_06",
+            "title": "角色定义 / Character",
+            "content": "young adult woman, long wavy hair, white trench coat",
+            "enabled": true,
+            "weight": 1.2,
+            "options":
+            [
+                "young adult woman, long wavy hair, white trench coat",
+                "young adult man, short textured hair, black leather jacket",
+                "middle-aged detective, formal suit, tired eyes",
+                "teenager, school uniform, backpack",
+                "elderly fisherman, weathered face, wool coat"
+            ]
+        },
+        {
+            "id": "ltx23_entry_07",
+            "title": "动作描述 / Action",
+            "content": "walking slowly, turning head, gentle smile",
+            "enabled": true,
+            "weight": 1.1,
+            "options":
+            [
+                "walking",
+                "walking briskly",
+                "running",
+                "waving",
+                "nodding",
+                "looking around",
+                "turning around",
+                "picking up"
+            ]
+        },
+        {
+            "id": "ltx23_entry_08",
+            "title": "镜头运动 / Camera Movement",
+            "content": "slow dolly in, side tracking",
+            "enabled": true,
+            "weight": 1.1,
+            "options":
+            [
+                "static",
+                "slow dolly in",
+                "medium dolly in",
+                "fast dolly in",
+                "slow dolly out",
+                "medium dolly out",
+                "fast dolly out",
+                "pan left",
+                "pan right",
+                "slow pan across",
+                "fast whip pan",
+                "tilt up",
+                "tilt down",
+                "vertical tilt",
+                "tracking forward",
+                "tracking backward",
+                "side tracking",
+                "steadicam follow",
+                "handheld follow",
+                "crane up",
+                "crane down",
+                "crane sweep",
+                "handheld",
+                "slight handheld",
+                "heavy handheld",
+                "shoulder-mounted",
+                "360-degree orbit",
+                "180-degree arc",
+                "circle around",
+                "spiral orbit",
+                "slow zoom in",
+                "quick zoom in",
+                "slow zoom out",
+                "quick zoom out",
+                "snap zoom",
+                "rack focus",
+                "focus foreground to background",
+                "focus background to foreground",
+                "focus pull between characters",
+                "breathing lens"
+            ]
+        },
+        {
+            "id": "ltx23_entry_09",
+            "title": "光线设计 / Lighting",
+            "content": "golden hour, volumetric light, rim light",
+            "enabled": true,
+            "weight": 1.1,
+            "options":
+            [
+                "dawn light",
+                "sunrise glow",
+                "morning light",
+                "late morning light",
+                "noon sunlight",
+                "afternoon light",
+                "golden hour",
+                "sunset glow",
+                "dusk light",
+                "blue hour",
+                "moonlight",
+                "starlight",
+                "window light",
+                "dappled light through trees",
+                "cloudy light",
+                "foggy light",
+                "rainy day light",
+                "snow light",
+                "reflected light",
+                "diffused light",
+                "direct sunlight",
+                "scattered light",
+                "backlight",
+                "side backlight",
+                "overhead light",
+                "underlight",
+                "volumetric light",
+                "Tyndall effect",
+                "god rays",
+                "rainbow light",
+                "incandescent light",
+                "fluorescent light",
+                "LED light",
+                "desk lamp",
+                "chandelier",
+                "wall sconce",
+                "floor lamp",
+                "spotlight",
+                "fresnel light",
+                "softbox",
+                "reflector",
+                "neon light",
+                "neon sign",
+                "candlelight",
+                "torchlight",
+                "campfire",
+                "fireplace glow",
+                "car headlights",
+                "street light",
+                "flashlight",
+                "phone screen",
+                "computer screen",
+                "TV glow",
+                "refrigerator light",
+                "oven light",
+                "microwave light",
+                "alarm clock glow",
+                "emergency light",
+                "camera flash",
+                "strobe light",
+                "laser",
+                "projector light",
+                "stage lighting",
+                "follow spot",
+                "background light",
+                "rim light",
+                "hair light",
+                "catch light",
+                "fill light",
+                "key light"
+            ]
+        },
+        {
+            "id": "ltx23_entry_10",
+            "title": "音频氛围 / Audio",
+            "content": "city ambience, footsteps echoing, soft cinematic background music",
+            "enabled": true,
+            "weight": 1.0,
+            "options":
+            [
+                "rain falling",
+                "wind blowing",
+                "city ambience",
+                "crowd chattering",
+                "footsteps echoing",
+                "silence",
+                "piano background score",
+                "ambient cinematic music"
+            ]
+        },
+        {
+            "id": "ltx23_entry_11",
+            "title": "画面风格 / Style",
+            "content": "cinematic look, film grain, anamorphic",
+            "enabled": true,
+            "weight": 1.1,
+            "options":
+            [
+                "cinematic look",
+                "film grain",
+                "Super 8",
+                "IMAX",
+                "CinemaScope",
+                "anamorphic",
+                "black and white",
+                "film noir",
+                "French New Wave",
+                "Italian Neorealism",
+                "German Expressionism",
+                "Soviet Montage",
+                "Classic Hollywood",
+                "New Hollywood",
+                "independent film",
+                "art house",
+                "documentary",
+                "cinéma vérité",
+                "mockumentary",
+                "music video",
+                "commercial",
+                "trailer",
+                "short film",
+                "feature film",
+                "TV series",
+                "web series",
+                "VR film"
+            ]
+        },
+        {
+            "id": "ltx23_entry_12",
+            "title": "天气/ Weather",
+            "content": "partly cloudy",
+            "enabled": true,
+            "weight": 1.0,
+            "options":
+            [
+                "clear sunny day",
+                "partly cloudy",
+                "overcast",
+                "light rain",
+                "heavy rain",
+                "torrential rain",
+                "thunderstorm",
+                "lightning",
+                "light snow",
+                "heavy snowfall",
+                "blizzard",
+                "fog",
+                "thick fog",
+                "haze",
+                "dust storm",
+                "typhoon",
+                "hurricane",
+                "tornado",
+                "hailstorm",
+                "frost",
+                "dew",
+                "rainbow",
+                "double rainbow",
+                "aurora borealis",
+                "meteor shower",
+                "smog",
+                "pollen",
+                "falling leaves",
+                "cherry blossom rain",
+                "dandelion seeds"
+            ]
+        },
+        {
+            "id": "ltx23_entry_13",
+            "title": "避免项 / Negative",
+            "content": "no text, no logo, no watermark, no flicker, no jitter, no deformed face",
+            "enabled": true,
+            "weight": 1.0,
+            "options":
+            [
+                "no text",
+                "no logo",
+                "no watermark",
+                "no extra fingers",
+                "no deformed face",
+                "no duplicated limbs",
+                "no flicker",
+                "no jitter",
+                "no frame tearing"
+            ]
+        }
+    ],
+    "settings":
     {
-      "id": "ltx23_entry_01",
-      "title": "景别 / Shot Size",
-      "content": "medium close-up",
-      "enabled": true,
-      "weight": 1.1,
-      "options": [
-        "extreme wide shot",
-        "wide shot",
-        "medium shot",
-        "medium close-up",
-        "close-up",
-        "over-the-shoulder shot",
-        "establishing shot",
-        "drone shot"
-      ]
+        "connector": ", ",
+        "mode": "M",
+        "weightFormat": "parentheses",
+        "showOutputPreview": true,
+        "language": "zh",
+        "modelTemplate": "ltx23",
+        "llmModel":
+        {
+            "name": "gpt-4o-mini",
+            "task": "video_prompt_generation"
+        },
+        "userLanguageInput": ""
     },
-    {
-      "id": "ltx23_entry_02",
-      "title": "镜头焦距 / Lens",
-      "content": "35mm standard",
-      "enabled": true,
-      "weight": 1.0,
-      "options": [
-        "24mm wide",
-        "35mm standard",
-        "50mm normal",
-        "85mm portrait",
-        "135mm tele",
-        "macro shot"
-      ]
-    },
-    {
-      "id": "ltx23_entry_03",
-      "title": "景深与对焦 / DOF + Focus",
-      "content": "shallow depth of field, focus on eyes",
-      "enabled": true,
-      "weight": 1.0,
-      "options": [
-        "shallow depth of field",
-        "deep depth of field",
-        "beautiful bokeh",
-        "creamy bokeh",
-        "rack focus",
-        "focus on eyes"
-      ]
-    },
-    {
-      "id": "ltx23_entry_04",
-      "title": "场景地点 / Location",
-      "content": "bustling city street",
-      "enabled": true,
-      "weight": 1.1,
-      "options": [
-        "bustling city street",
-        "quiet alley",
-        "cozy café",
-        "quiet library",
-        "rooftop",
-        "sandy beach",
-        "dense forest",
-        "space station"
-      ]
-    },
-    {
-      "id": "ltx23_entry_05",
-      "title": "时间与天气 / Time + Weather",
-      "content": "dusk, light rain",
-      "enabled": true,
-      "weight": 1.0,
-      "options": [
-        "dawn",
-        "golden hour",
-        "dusk",
-        "blue hour",
-        "night",
-        "rainy afternoon",
-        "snowy night",
-        "foggy morning"
-      ]
-    },
-    {
-      "id": "ltx23_entry_06",
-      "title": "角色定义 / Character",
-      "content": "young adult woman, long wavy hair, white trench coat",
-      "enabled": true,
-      "weight": 1.2,
-      "options": [
-        "young adult woman, long wavy hair, white trench coat",
-        "young adult man, short textured hair, black leather jacket",
-        "middle-aged detective, formal suit, tired eyes",
-        "teenager, school uniform, backpack",
-        "elderly fisherman, weathered face, wool coat"
-      ]
-    },
-    {
-      "id": "ltx23_entry_07",
-      "title": "动作描述 / Action",
-      "content": "walking slowly, turning head, gentle smile",
-      "enabled": true,
-      "weight": 1.1,
-      "options": [
-        "walking",
-        "walking briskly",
-        "running",
-        "waving",
-        "nodding",
-        "looking around",
-        "turning around",
-        "picking up"
-      ]
-    },
-    {
-      "id": "ltx23_entry_08",
-      "title": "镜头运动 / Camera Movement",
-      "content": "slow dolly in, side tracking",
-      "enabled": true,
-      "weight": 1.1,
-      "options": [
-        "static",
-        "slow dolly in",
-        "slow dolly out",
-        "pan left",
-        "pan right",
-        "side tracking",
-        "steadicam follow",
-        "crane down",
-        "slow zoom in"
-      ]
-    },
-    {
-      "id": "ltx23_entry_09",
-      "title": "光线设计 / Lighting",
-      "content": "golden hour, volumetric light, rim light",
-      "enabled": true,
-      "weight": 1.1,
-      "options": [
-        "window light",
-        "golden hour",
-        "moonlight",
-        "dappled light through trees",
-        "volumetric light",
-        "backlight",
-        "rim light",
-        "neon light",
-        "street light"
-      ]
-    },
-    {
-      "id": "ltx23_entry_10",
-      "title": "音频氛围 / Audio",
-      "content": "city ambience, footsteps echoing, soft cinematic background music",
-      "enabled": true,
-      "weight": 1.0,
-      "options": [
-        "rain falling",
-        "wind blowing",
-        "city ambience",
-        "crowd chattering",
-        "footsteps echoing",
-        "silence",
-        "piano background score",
-        "ambient cinematic music"
-      ]
-    },
-    {
-      "id": "ltx23_entry_11",
-      "title": "画面风格 / Style",
-      "content": "cinematic look, film grain, anamorphic",
-      "enabled": true,
-      "weight": 1.1,
-      "options": [
-        "cinematic look",
-        "film grain",
-        "35mm film",
-        "anamorphic",
-        "film noir",
-        "documentary",
-        "commercial",
-        "IMAX"
-      ]
-    },
-    {
-      "id": "ltx23_entry_12",
-      "title": "避免项 / Negative",
-      "content": "no text, no logo, no watermark, no flicker, no jitter, no deformed face",
-      "enabled": true,
-      "weight": 1.0,
-      "options": [
-        "no text",
-        "no logo",
-        "no watermark",
-        "no extra fingers",
-        "no deformed face",
-        "no duplicated limbs",
-        "no flicker",
-        "no jitter",
-        "no frame tearing"
-      ]
-    }
-  ],
-  "settings": {
-    "connector": ", ",
-    "mode": "M",
-    "weightFormat": "parentheses",
-    "showOutputPreview": true,
-    "language": "zh",
-    "modelTemplate": "ltx23",
-    "llmModel": {
-      "name": "gpt-4o-mini",
-      "task": "video_prompt_generation"
-    },
-    "userLanguageInput": ""
-  },
-  "lexicon": [
-    {
-      "english": "medium close-up",
-      "chinese": "中近景"
-    },
-    {
-      "english": "35mm standard",
-      "chinese": "35mm标准焦段"
-    },
-    {
-      "english": "shallow depth of field",
-      "chinese": "浅景深"
-    },
-    {
-      "english": "rack focus",
-      "chinese": "焦点转换"
-    },
-    {
-      "english": "golden hour",
-      "chinese": "黄金时刻"
-    },
-    {
-      "english": "blue hour",
-      "chinese": "蓝调时刻"
-    },
-    {
-      "english": "slow dolly in",
-      "chinese": "缓慢推轨进"
-    },
-    {
-      "english": "side tracking",
-      "chinese": "侧向跟拍"
-    },
-    {
-      "english": "volumetric light",
-      "chinese": "体积光"
-    },
-    {
-      "english": "rim light",
-      "chinese": "轮廓光"
-    },
-    {
-      "english": "city ambience",
-      "chinese": "城市环境音"
-    },
-    {
-      "english": "footsteps echoing",
-      "chinese": "回响脚步声"
-    },
-    {
-      "english": "cinematic look",
-      "chinese": "电影感风格"
-    },
-    {
-      "english": "film grain",
-      "chinese": "胶片颗粒"
-    },
-    {
-      "english": "anamorphic",
-      "chinese": "变形宽银幕"
-    },
-    {
-      "english": "no flicker",
-      "chinese": "无闪烁"
-    },
-    {
-      "english": "no jitter",
-      "chinese": "无抖动"
-    }
-  ]
+    "lexicon":
+    [
+        {
+            "english": "medium close-up",
+            "chinese": "中近景"
+        },
+        {
+            "english": "35mm standard",
+            "chinese": "35mm标准焦段"
+        },
+        {
+            "english": "shallow depth of field",
+            "chinese": "浅景深"
+        },
+        {
+            "english": "rack focus",
+            "chinese": "焦点转换"
+        },
+        {
+            "english": "golden hour",
+            "chinese": "黄金时刻"
+        },
+        {
+            "english": "blue hour",
+            "chinese": "蓝调时刻"
+        },
+        {
+            "english": "slow dolly in",
+            "chinese": "缓慢推轨进"
+        },
+        {
+            "english": "side tracking",
+            "chinese": "侧向跟拍"
+        },
+        {
+            "english": "volumetric light",
+            "chinese": "体积光"
+        },
+        {
+            "english": "rim light",
+            "chinese": "轮廓光"
+        },
+        {
+            "english": "city ambience",
+            "chinese": "城市环境音"
+        },
+        {
+            "english": "footsteps echoing",
+            "chinese": "回响脚步声"
+        },
+        {
+            "english": "cinematic look",
+            "chinese": "电影感风格"
+        },
+        {
+            "english": "film grain",
+            "chinese": "胶片颗粒"
+        },
+        {
+            "english": "anamorphic",
+            "chinese": "变形宽银幕"
+        },
+        {
+            "english": "no flicker",
+            "chinese": "无闪烁"
+        },
+        {
+            "english": "no jitter",
+            "chinese": "无抖动"
+        }
+    ]
 }
