@@ -56,6 +56,15 @@
     *   **全局设置**: 点击左下角的 `⚙️` 按钮修改全局连接符。
     *   **S/M 模式**: 点击右下角的 "Mode: M/S" 按钮切换输出模式。
 
+### 新增：PromptSE + LTX2.3 图生视频工作流
+
+仓库新增了 `video_ltx2_3_i2v_promptse.json`，用于把 PromptSE 插件内整合后的提示词直接输送到 LTX 2.3 的图生视频工作流：
+
+1. 导入 `video_ltx2_3_i2v_promptse.json`。
+2. 在 `PromptSE` 节点中配置条目、权重和词库，并在 `user_input` 中填写你的额外需求。
+3. `PromptSE.output_string` 会直接连接到 LTX 工作流子图的 `prompt` 输入（原 `widgets_values` 文本输入位）。
+4. 保留原有图生视频参数（分辨率、长度、LoRA、upscaler）不变，仅替换提示词来源为可编辑的 PromptSE 聚合结果。
+
 ## 📄 词库文件格式
 
 词库应为 UTF-8 编码的 `.txt` 文件。每行代表一个词条，格式为 `英文提示词,中文译名` 或 `英文提示词 中文译名`。
