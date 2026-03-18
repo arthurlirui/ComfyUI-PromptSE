@@ -112,16 +112,24 @@ class PromptSE:
                         final_parts.append(formatted_content)
                         print(f"PromptSE: Multiple mode - added: '{formatted_content}' (weight: {weight})")
 
-        output_string = connector.join(final_parts)
-
         normalized_user_input = (user_input or "").strip()
+
+        # Merge user_input into the final prompt output so downstream workflow prompt input
+        # always receives both PromptSE selected terms and user-defined free text.
+        output_parts = []
+        if final_parts:
+            output_parts.extend(final_parts)
+        if normalized_user_input:
+            output_parts.append(normalized_user_input)
+        output_string = connector.join(output_parts)
+
         selected_terms = ", ".join(final_parts)
-        if selected_terms:
+        if selected_terms or normalized_user_input:
             llm_input = (
                 f"Model={llm_model}; Task=video_prompt_generation; Language={language}. "
                 f"Combine ALL selected terms into one coherent video generation prompt. "
                 f"Preserve key visual, motion, lighting, audio, and negative constraints. "
-                f"Selected terms: {selected_terms}. "
+                f"Selected terms: {selected_terms if selected_terms else 'None'}. "
                 f"User language input: {normalized_user_input if normalized_user_input else 'None'}. "
                 "Output only the final polished prompt text."
             )
